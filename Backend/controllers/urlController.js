@@ -25,6 +25,15 @@ exports.shortenUrl = async (req, res) => {
     }
 };
 
+exports.getUrls = async (req, res) => {
+    try {
+        let urls = await Url.findAll();
+        res.json({ urls });
+    } catch (err) {
+        console.log(err, 'err in shorten ')
+    }
+};
+
 exports.redirectUrl = async (req, res) => {
     const { shortId } = req.params;
     const urlEntry = await Url.findOne({ where: { shortId } });
