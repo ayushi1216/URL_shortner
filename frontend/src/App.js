@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './index.css';
 
-const BASE_URL = `https://url-shortner-backend-plum.vercel.app`;
+const BASE_URL = `https://url-shortner-backend-sigma-black.vercel.app`;
 function App() {
   const [originalUrl, setOriginalUrl] = useState('');
   const [urls, setUrls] = useState([]);
