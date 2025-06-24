@@ -18,7 +18,8 @@ exports.shortenUrl = async (req, res) => {
         }
 
         const newUrl = await Url.create({ shortId, originalUrl });
-        res.json({ shortUrl: `${process.env.BASE_URL}/${shortId}`, id: shortId });
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        res.json({ shortUrl: `${baseUrl}/${shortId}`, id: shortId });
     } catch (err) {
         console.log(err, 'err in shorten ')
     }
