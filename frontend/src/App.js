@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './index.css';
 
+const BASE_URL = `https://url-shortner-backend-plum.vercel.app`;
 function App() {
   const [originalUrl, setOriginalUrl] = useState('');
   const [urls, setUrls] = useState([]);
@@ -10,7 +11,7 @@ function App() {
     e.preventDefault();
     if (!originalUrl) return;
     try {
-      const res = await axios.post('http://localhost:5000/api/shorten', { originalUrl });
+      const res = await axios.post(`${BASE_URL}/api/shorten`, { originalUrl });
       setUrls([...urls, res.data]);
       setOriginalUrl('');
     } catch (err) {
@@ -18,6 +19,16 @@ function App() {
     }
   };
 
+  const getUrls = () => {
+    axios.get(`${BASE_URL}/api/urls`).then(res => {
+      const urls = (res?.data?.urls || []).map(url => ({ shortUrl: `${BASE_URL}/${url.shortId}` }))
+      setUrls(urls);
+    }).catch(ex => console.log("error occured", ex))
+  }
+
+  useEffect(() => {
+    getUrls()
+  }, [])
 
   return (
     <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif' }}>
