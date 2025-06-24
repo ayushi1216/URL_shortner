@@ -11,7 +11,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use('/', urlRoutes);
 
-sequelize.sync().then(() => {
-    app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`));
-}).catch(err => console.log('DB connection error: ', err));
+// sequelize.sync().then(() => {
+//     app.listen(PORT, () => console.log(`Server is running on Port ${PORT}`));
+// }).catch(err => console.log('DB connection error: ', err));
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
 
