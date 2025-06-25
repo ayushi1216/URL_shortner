@@ -30,7 +30,6 @@ exports.shortenUrl = async (req, res) => {
             shortId = nanoid(6);
             idExists = await Url.findOne({ where: { shortId } });
         }
-
         // Save new ShortUrl
         const newUrl = await Url.create({ shortId, originalUrl });
 

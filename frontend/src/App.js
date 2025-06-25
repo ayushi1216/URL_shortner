@@ -12,8 +12,29 @@ function App() {
     if (!originalUrl) return;
     try {
       const res = await axios.post(`${BASE_URL}/api/shorten`, { originalUrl });
-      setUrls([...urls, res.data]);
+
+      // console.log("previous urls: ", urls)
+      // console.log("New urls from API", res.data)
+
+      const combined = [...urls, res.data];
+
+      // console.log('Combined list before filtering', combined)
+
+      // To remove duplicates from an array of objects based on specific property... Here used (id)
+      // Not (set) because it only works on primitive types (like strings or numbers). For objects we must manually check properties using .filter() and .findIndex()
+      // self is the whole array (combined).
+      // self.findIndex(...) finds the first index where (shortUrl) id matches the current item.id.
+      // If the current indx is equal to the first index, keep it. 
+
+      const uniqueUrls = combined.filter(
+        (item, index, self) =>
+          index === self.findIndex((t) => t.id === item.id)
+      );
+      // console.log("Unique urls after filtering", uniqueUrls);
+
+      setUrls(uniqueUrls);
       setOriginalUrl('');
+
     } catch (err) {
       alert('Invalid URL or server error');
     }
