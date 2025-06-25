@@ -1,25 +1,41 @@
 const { nanoid } = require('nanoid');
 const Url = require('../models/Url');
+const { escapeId } = require('mysql2');
 
 
 exports.shortenUrl = async (req, res) => {
     try {
+
         const { originalUrl } = req.body;
 
         if (!originalUrl || !/^https?:\/\//.test(originalUrl)) {
             return res.status(400).json({ error: 'Invalid or missing URL' });
         }
 
-        let shortId = nanoid(6);
-        let existing = await Url.findOne({ where: { shortId } });
-        while (existing) {
-            shortId = nanoid(6);
-            existing = await Url.findOne({ where: { shortId } });
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+
+        //  Checking if URL is already shortened
+        let existing = await Url.findOne({ where: { originalUrl } });
+
+        if (existing) {
+            return res.json({ shortUrl: `${baseUrl}/${existing.shortId}`, id: existing.shortId })
         }
 
+        // Otherwise Generating unique shortId of new URL
+        let shortId = nanoid(6);
+
+        // Checking if any such shortId exists
+        let idExists = await Url.findOne({ where: { shortId } });
+        while (idExists) {
+            shortId = nanoid(6);
+            idExists = await Url.findOne({ where: { shortId } });
+        }
+
+        // Save new ShortUrl
         const newUrl = await Url.create({ shortId, originalUrl });
-        const baseUrl = `${req.protocol}://${req.get('host')}`;
+
         res.json({ shortUrl: `${baseUrl}/${shortId}`, id: shortId });
+
     } catch (err) {
         console.log(err, 'err in shorten ')
     }

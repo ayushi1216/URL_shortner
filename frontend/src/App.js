@@ -19,16 +19,16 @@ function App() {
     }
   };
 
-  const getUrls = () => {
-    axios.get(`${BASE_URL}/api/urls`).then(res => {
-      const urls = (res?.data?.urls || []).map(url => ({ shortUrl: `${BASE_URL}/${url.shortId}` }))
-      setUrls(urls);
-    }).catch(ex => console.log("error occured", ex))
-  }
+  // const getUrls = () => {
+  //   axios.get(`${BASE_URL}/api/urls`).then(res => {
+  //     const urls = (res?.data?.urls || []).map(url => ({ shortUrl: `${BASE_URL}/${url.shortId}` }))
+  //     setUrls(urls);
+  //   }).catch(ex => console.log("error occured", ex))
+  // }
 
-  useEffect(() => {
-    getUrls()
-  }, [])
+  // useEffect(() => {
+  //   getUrls()
+  // }, [])
 
   return (
     <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif' }}>
