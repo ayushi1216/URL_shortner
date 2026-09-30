@@ -1,6 +1,4 @@
-URL Shortener App
-
-This is a full-stack URL Shortener application built using :
+URL Shortener
 
 - **Backend**: Node.js, Express.js, Sequelize, MySQL
 
